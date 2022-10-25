@@ -70,17 +70,29 @@ public class Pacote implements Serializable {
 		mensagem = null;//msg em si		
 	}
 	
-	//construtor para enviar o ID para o usuário que se conectou no servidor.
-	public Pacote(Object firstId) {
+	
+	public Pacote(Integer idOrigem, MessageType t) {
+		super();
+		this.idOrigem = idOrigem;
+		this.hora = null;
+		this.idDestino = null;
+		this.tipo = t;
+		nomeOrigem = null;
+		nomeDestino = null;
+		mensagem = null;//msg em si		
+	}
+	
+	public Pacote(Integer idDestino, Object message,MessageType t) {
 		super();
 		this.idOrigem = null;
 		this.hora = null;
-		this.idDestino = null;
-		this.tipo = MessageType.ID;
+		this.idDestino = idDestino;
+		this.tipo = t;
 		nomeOrigem = null;
 		nomeDestino = null;
-		mensagem = firstId;//msg em si		
+		mensagem = message;//msg em si		
 	}
+	
 
 	//enviar uma mensagem para todos.
 	public Pacote(Integer idOrigem, String nomeOrigem, String mensagem, LocalTime hora) {

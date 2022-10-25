@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
+import server.Pacote.MessageType;
+
 /*Na aplicação servidora, um objeto registrador deve esperar novos usuários do chat 
 e realizar todo processo de registro de novos usuários quando alguém chegar.*/
 public class Registrador implements Runnable{
@@ -68,7 +70,7 @@ public class Registrador implements Runnable{
 					String nomeClient = p.getMessage().toString();//entrada.readLine();
 					
 					System.out.println("Cliente conectado: "+ nomeClient + " " + socket.getInetAddress().getHostAddress());
-					saida.writeObject(new Pacote(nextId));
+					saida.writeObject(new Pacote(nextId,nextId,MessageType.ID));
 					Receptor receptor = new Receptor(entrada, this.distribuidor);
 					Thread pilha = new Thread(receptor);
 					pilha.start();
@@ -76,8 +78,8 @@ public class Registrador implements Runnable{
 
 					clients.add(new User(this.nextId++, nomeClient));//adiciona o novo cliente a lista de clientes do server.
 
-
 					this.distribuidor.adicionaEmissor(emissor);
+					//this.distribuidor.distribuiMensagem(new Pacote());
 			} catch (IOException | ClassNotFoundException e) {
 				System.out.println("ERRO");
 			}

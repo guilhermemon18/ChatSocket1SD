@@ -82,9 +82,9 @@ public class Client {
 		
 		
 		try {
-			new Client();/*
-							 * new Client("Guilherme"); new Client("Vanessa");
-							 */
+			new Client("Guilherme");
+							  new Client("Vanessa");
+							 new Client("Leontina");
 			System.out.println("Criando os cliente");
 						
 		} catch (IOException e) {

@@ -33,6 +33,7 @@ import javax.swing.text.StyleContext;
 import client.Client;
 import client.EmissorDeMensagem;
 import server.Pacote;
+import server.Pacote.MessageType;
 import server.User;
 
 public class Chat {
@@ -212,6 +213,7 @@ public class Chat {
 	}
 
 	public void setUsers(List<User> l)  {
+		this.cbParticipantes.removeAllItems();
 		for (User user : l) {
 			cbParticipantes.addItem(user);
 		}
