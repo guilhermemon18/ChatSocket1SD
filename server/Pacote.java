@@ -59,15 +59,15 @@ public class Pacote implements Serializable {
 	}
 	
 	//pacote para desconectar um cliente.
-	public Pacote(Integer idOrigem, LocalTime horaDesconectado) {
+	public Pacote(Integer idOrigem,String nomeOrigem, LocalTime horaDesconectado) {
 		super();
 		this.idOrigem = idOrigem;
 		this.hora = horaDesconectado;
 		this.idDestino = null;
 		this.tipo = MessageType.DISCONNET;
-		nomeOrigem = null;
+		this.nomeOrigem = nomeOrigem;
 		nomeDestino = null;
-		mensagem = null;//msg em si		
+		mensagem = "Desconectado";//msg em si		
 	}
 	
 	
@@ -106,16 +106,15 @@ public class Pacote implements Serializable {
 		this.nomeDestino = null;
 	}
 	
-	//enviar a lista de usuários para um destino
-	public Pacote(Integer idDestino, List<User> users) {
+	//enviar a lista de usuários para todo mundo.
+	public Pacote(List<User> users) {
 		super();
 		this.idOrigem = null;//indica que o servidor quem mandou!
-		this.idDestino = idDestino;
+		this.idDestino = null;
 		this.nomeOrigem = null; //servidor quem mandou
 		this.mensagem = users;
 		this.hora = null;
 		this.tipo = MessageType.GETUSERS;
-		this.idDestino = null;
 		this.nomeDestino = null;
 	}
 	
@@ -151,15 +150,16 @@ public class Pacote implements Serializable {
 	
 	//obtem a msg: faz a lógica e dependendo do pacote dá uma msg diferente para cada situação requisitada.
 	public Object getMessage() {
-		if(this.tipo.equals(MessageType.GETUSERS) || this.tipo.equals(MessageType.ID) || this.tipo.equals(MessageType.DISCONNET) || 
+		if(this.tipo.equals(MessageType.GETUSERS) || this.tipo.equals(MessageType.ID)  || 
 				this.tipo.equals(MessageType.NAME)) {
 			return this.mensagem;
-		}else if(this.tipo.equals(MessageType.ALLUSERS)){
+		}else if(this.tipo.equals(MessageType.ALLUSERS) || this.tipo.equals(MessageType.DISCONNET)){
 			
 			return this.nomeOrigem + " " + this.hora.toString().substring(0,8) + ": " + this.mensagem;
-		}else {
-			return this.hora.toString().substring(0, 8) + ": " + this.mensagem;
-		}
+		}//else {
+//			return this.hora.toString().substring(0, 8) + ": " + this.mensagem;
+		return this.nomeOrigem + " " + this.hora.toString().substring(0,8) + ": " + this.mensagem;
+//		}
 	}
 
 	@Override

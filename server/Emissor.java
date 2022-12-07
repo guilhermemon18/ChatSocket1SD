@@ -2,9 +2,6 @@ package server;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.List;
-
-import server.Pacote.MessageType;
 
 /*
 Para cada usuário cadastrado no chat da K19 deve ser criado um objeto da classe EMISSOR.
@@ -13,28 +10,22 @@ correspondente.*/
 public class Emissor{
 
 	private ObjectOutputStream saida;
+	private Integer id;
 
-	public Emissor(ObjectOutputStream saida) {
+	public Emissor(ObjectOutputStream saida,Integer id) {
 		this.saida = saida;
+		this.id = id;
+	}
+
+	public Integer getId() {
+		return id;
 	}
 
 	public void envia(Object mensagem) throws IOException {
-		
-		
-		Pacote msg = (Pacote) mensagem;
 
-		if(msg.getTipo().equals(MessageType.GETUSERS)) {
-			System.out.println("Entrou enviar lista de usu[arios conectados no emissor!");
-			System.out.println("Número do ID de destino!" + msg.getIdDestino());
-			List<User> l = (List<User>) msg.getMessage();
-			System.out.println("LIsta de usuários!");
-			for (User user : l) {
-				System.out.println(user);
-			}
-		}
-		
-		
+
 		this.saida.writeObject(mensagem);
+		this.saida.flush();
 		//System.out.println("Imprimindo mensagem no emissor: " + mensagem);
 	}
 
@@ -42,4 +33,15 @@ public class Emissor{
 	public String toString() {
 		return "Emissor [saida=" + saida + "]";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		Emissor m = (Emissor) obj;
+		return this.id.equals(m.id);
+	}
+
+
+
+
 }

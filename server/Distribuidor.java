@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import server.Pacote.MessageType;
@@ -28,7 +29,7 @@ public class Distribuidor{
 		this.emissores.add(emissor);
 	}
 	
-	public void removeEmissor(Emissor emissor) {
+	private void removeEmissor(Emissor emissor) {
 		this.emissores.remove(emissor);
 	}
 	
@@ -37,15 +38,17 @@ public class Distribuidor{
 		
 		
 		Pacote msg = (Pacote) mensagem;
-
-		if(msg.getTipo().equals(MessageType.GETUSERS)) {
-			System.out.println("Entrou enviar lista de usu[arios conectados no distribuidor!");
-			System.out.println("Número do ID de destino!" + msg.getIdDestino());
-			List<User> l = (List<User>) msg.getMessage();
-			System.out.println("LIsta de usuários!");
-			for (User user : l) {
-				System.out.println(user);
-			}
+		
+		if(msg.getTipo().equals(MessageType.DISCONNET)) {
+			System.out.println("Entrou desconectar um cliente!");
+			removeEmissor(new Emissor(null,msg.getIdOrigem()));
+			this.users.remove(new User(msg.getIdOrigem(),null));
+			List<User> teste = new LinkedList<User>(this.users);
+			//teste.add(new User(1,"Guilherme"));
+			//teste.add(new User(2,"Camila"));
+			
+			this.distribuiMensagem(new Pacote(teste));
+			
 		}
 		
 		for (Emissor emissor : this.emissores) {

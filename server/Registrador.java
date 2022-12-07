@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,11 +59,11 @@ public class Registrador implements Runnable{
 			try {
 				//aceita a conexão e retorna uma referencia para o socket do novo cliente que foi criado lá pela classe Client.
 				Socket socket = this.serverSocket.accept();
-
-
+				
+				
 				//provavelmente será aqui o controle dos clientes conectados, aqui ele pega uma nova conexão com o socket e cria emissores e receptores para ela.
-
-
+				
+				
 				ObjectInputStream entrada = new ObjectInputStream(socket.getInputStream());
 				ObjectOutputStream saida = new ObjectOutputStream(socket.getOutputStream());
 					// ... 
@@ -74,12 +75,26 @@ public class Registrador implements Runnable{
 					Receptor receptor = new Receptor(entrada, this.distribuidor);
 					Thread pilha = new Thread(receptor);
 					pilha.start();
-					Emissor emissor = new Emissor(saida);
+					Emissor emissor = new Emissor(saida,this.nextId);
 
 					clients.add(new User(this.nextId++, nomeClient));//adiciona o novo cliente a lista de clientes do server.
-
+					
 					this.distribuidor.adicionaEmissor(emissor);
-					//this.distribuidor.distribuiMensagem(new Pacote());
+					
+					
+					for (User user : clients) {
+						System.out.println(user);
+					}
+					//porcaria de java, não está entendendo que é para mandar a lista atualizada, tá com problemas na lista que ele manda.
+					List<User> teste = new LinkedList<User>(clients);
+					//teste.add(new User(1,"Guilherme"));
+					//teste.add(new User(2,"Camila"));
+					
+					this.distribuidor.distribuiMensagem(new Pacote(teste));
+					
+					
+					
+					
 			} catch (IOException | ClassNotFoundException e) {
 				System.out.println("ERRO");
 			}

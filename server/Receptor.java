@@ -26,25 +26,15 @@ public class Receptor implements Runnable {
 
 			try {
 				Pacote mensagem = (Pacote) this.entrada.readObject();
+				this.distribuidor.distribuiMensagem(mensagem);
+				//this.distribuidor.distribuiMensagem(new Pacote(this.distribuidor.getUsers()));//teste enviar os clientes para todo mundo
+				//sempre que uma msg é enviada.
 
-				if(mensagem.getTipo().equals(MessageType.GETUSERS)) {
-					System.out.println("Entrou enviar lista de usu[arios conectados no receptor!");
-					System.out.println("Número do ID de origem!" + mensagem.getIdOrigem());
-					List<User> l = this.distribuidor.getUsers();
-					System.out.println("LIsta de usuários!");
-					for (User user : l) {
-						System.out.println(user);
-					}
-					Pacote enviar = new Pacote(mensagem.getIdOrigem(),this.distribuidor.getUsers(),MessageType.GETUSERS);
-					//this.distribuidor.distribuiMensagem(new Pacote(mensagem.getIdOrigem(),this.distribuidor.getUsers()));
-					System.out.println("Id de destino : " + enviar.getIdDestino());
-					this.distribuidor.distribuiMensagem(enviar);
-				}else {
-					this.distribuidor.distribuiMensagem(mensagem);
-				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+				//e.printStackTrace();
+				break;
 			}
 
 		}

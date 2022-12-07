@@ -46,12 +46,12 @@ public class Client {
 	//construtor do cliente.
 	public Client() throws UnknownHostException, IOException {
 		JLabel lblMessage = new JLabel("Criando Cliente!");
-		txtIP = new JTextField();
+		//txtIP = new JTextField();
 		JLabel lblinserirnome = new JLabel("Insira o nome!");
 		txtNome = new JTextField();
-		Object[] texts = {lblMessage, lblinserirnome, txtPorta, txtNome,new JLabel("Insira o IP"), txtIP };
+		Object[] texts = {lblMessage, lblinserirnome, txtPorta, txtNome };
 		JOptionPane.showMessageDialog(null, texts);
-		socket = new Socket(txtIP.getText(), 10000);
+		socket = new Socket("localhost", 10000);
 
 
 		saida = new ObjectOutputStream(socket.getOutputStream());
@@ -82,9 +82,10 @@ public class Client {
 		
 		
 		try {
-			new Client("Guilherme");
-							  new Client("Vanessa");
-							 new Client("Leontina");
+			new Client();//new Client("Guilherme");
+//							  new Client("Vanessa");
+//							 new Client("Leontina");
+//							 new Client("Gisele");
 			System.out.println("Criando os cliente");
 						
 		} catch (IOException e) {

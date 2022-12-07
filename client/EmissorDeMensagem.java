@@ -16,6 +16,7 @@ public class EmissorDeMensagem {
 
 	public void envia(Object mensagem) throws IOException {
 		this.saida.writeObject(mensagem);
+		this.saida.flush();
 	}
 
 }

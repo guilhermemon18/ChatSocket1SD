@@ -26,6 +26,11 @@ public class User implements Serializable {
 	public String toString() {
 		return  id + "-" + nome;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		User u = (User) obj;
+		return u != null && this.id.equals(u.id);
+	}
 	
 	
 }
