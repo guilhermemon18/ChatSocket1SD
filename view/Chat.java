@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,7 @@ import client.Client;
 import client.EmissorDeMensagem;
 import server.Pacote;
 import server.User;
+import server.AES;
 
 public class Chat {
 
@@ -227,6 +229,17 @@ public class Chat {
 		LocalTime agora = LocalTime.now();
 
 		String msg = textField.getText();
+		
+		System.out.println("Mensagem original: " + msg);
+		/**
+		 * criptografo a mensagem
+		 */
+		AES aes = new AES();
+		String auxMsg = aes.Encriptar(msg,this.nome);
+		msg = auxMsg;
+		System.out.println("Mensagem criptografada: " + msg);
+				
+		//Enviando mensagem
 		Pacote p = new Pacote(this.id, this.nome, msg, agora);
 		System.out.println("enviando msg do cliente: " + p.getMessage());
 		emissorDeMensagem.envia(p);
@@ -278,16 +291,18 @@ public class Chat {
 	public void adicionaMSGPrivada(Pacote p) {
 		Integer idDestino = p.getIdDestino();
 		Integer idOrigem = p.getIdOrigem();
-		System.out.println("Entrou adicionar msg privada!");
+		System.out.println("\nEntrou adicionar msg privada!");
 		System.out.println("O id desta tela é: " + this.id);
 		System.out.println("O id de quem mandou a msg para cá é: " + idOrigem);
 		System.out.println("o id de quem deve receber essa msg é: " + idDestino);
 		for (ChatPrivado chatPrivado : chats) {
 			//			if(chatPrivado.getIdDestino().equals(idDestino)) {
-			System.out.println("Id origem do chat privado: " + chatPrivado.getIdOrigem());
+			System.out.println("\nId origem do chat privado: " + chatPrivado.getIdOrigem());
 			if(chatPrivado.getIdDestino().equals(idOrigem)) {
 
-				System.out.println("Encontrou um chat pronto já e adicinou a msg!");
+				System.out.println("\nEncontrou um chat pronto já e adicinou a msg!");
+				
+				
 				chatPrivado.adicionaMensagem(p.getMessage().toString());
 				return;//sai da função
 			}

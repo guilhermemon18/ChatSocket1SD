@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import client.EmissorDeMensagem;
+import server.AES;
 import server.Pacote;
 
 public class ChatPrivado extends JDialog{
@@ -190,10 +191,21 @@ public class ChatPrivado extends JDialog{
 		this.frame.toFront();
 	}
 
-	private void enviarMensagem() throws IOException {//arrumar isso ainda.
+	private void enviarMensagem() throws IOException {//arrumar isso ainda. Arrumou?
 		LocalTime agora = LocalTime.now();
 
 		String msg = textField.getText();
+		
+		System.out.println("Chat privado - Mensagem original: " + msg);
+		/**
+		 * criptografo a mensagem
+		 */
+		AES aes = new AES();
+		String auxMsg = aes.Encriptar(msg,this.nomeOrigem);
+		msg = auxMsg;
+		System.out.println("Chat privado - Mensagem criptografada: " + msg);
+		
+		
 		Pacote p = new Pacote(this.idOrigem,this.idDestino,this.nomeOrigem,this.nomeDestino,msg,agora);//new Pacote(this.idOrigem, this.nomeOrigem, msg, agora);
 		System.out.println("enviando msg do cliente: " + p.getMessage());
 		emissorDeMensagem.envia(p);
