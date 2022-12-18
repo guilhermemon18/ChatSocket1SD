@@ -29,6 +29,12 @@ public class Pacote implements Serializable {
 		this.idDestino = idDestino;
 		this.nomeOrigem = nomeOrigem;
 		this.nomeDestino = nomeDestino;
+		
+		/** Decripitar texto da mensagem aqui **/
+		AES aes = new AES();
+		mensagem = aes.Decriptar(mensagem, nomeOrigem);
+		
+		
 		this.mensagem = mensagem;
 		this.hora = hora;
 		this.tipo = MessageType.PRIVATE;
@@ -99,6 +105,11 @@ public class Pacote implements Serializable {
 		super();
 		this.idOrigem = idOrigem;
 		this.nomeOrigem = nomeOrigem;
+		
+		/** Decripitar texto da mensagem aqui **/
+		AES aes = new AES();
+		mensagem = aes.Decriptar(mensagem, nomeOrigem);
+		
 		this.mensagem = mensagem;
 		this.hora = hora;
 		this.tipo = MessageType.ALLUSERS;
@@ -154,6 +165,11 @@ public class Pacote implements Serializable {
 				this.tipo.equals(MessageType.NAME)) {
 			return this.mensagem;
 		}else if(this.tipo.equals(MessageType.ALLUSERS) || this.tipo.equals(MessageType.DISCONNET)){
+			
+			/**
+			 * decriptografar o texto da mensagem de acordo com o nome do cliente
+			 */
+			
 			
 			return this.nomeOrigem + " " + this.hora.toString().substring(0,8) + ": " + this.mensagem;
 		}//else {
