@@ -15,21 +15,20 @@ import view.Chat;
 
 public class Client {
 
-	
 	//Componentes do cliente:
-	private Socket socket;// aqui está a conexão que deve ser encerrada ao terminar o chat.
+	private Socket socket;				// aqui está a conexão que deve ser encerrada ao terminar o chat.
 	private ObjectOutputStream saida;
 	private ObjectInputStream entrada;
 	private EmissorDeMensagem emissor;
-	private Chat telaChat;//tela para visualizar as ações
+	private Chat telaChat;				//tela para visualizar as ações
 	private ReceptorDeMensagem receptor;//receptor para receber as informações e setar na tela.
-	private Thread pilha;//a thread para que flua.
+	private Thread pilha;				//a thread para que flua.
 
 	private JTextField txtIP;
 	private JTextField txtPorta;
 	private JTextField txtNome;
 
-	//construtor do cliente.
+	//Construtor do cliente.
 	public Client(String nomeCliente) throws UnknownHostException, IOException {
 		socket = new Socket("localhost", 10000);
 		saida = new ObjectOutputStream(socket.getOutputStream());
@@ -43,7 +42,7 @@ public class Client {
 		pilha.start();
 	}
 
-	//construtor do cliente.
+	//Construtor do cliente.
 	public Client() throws UnknownHostException, IOException {
 		JLabel lblMessage = new JLabel("Criando Cliente!");
 		//txtIP = new JTextField();
@@ -67,6 +66,7 @@ public class Client {
 
 	}
 
+	// Finaliza o chat 
 	public void fecharChat() throws IOException {
 		saida.close();
 		entrada.close();
@@ -78,23 +78,14 @@ public class Client {
 	}
 
 	public static void main(String[] args)  {
-
-		
-		
 		try {
-			new Client();//new Client("Guilherme");
-//							  new Client("Vanessa");
-//							 new Client("Leontina");
-//							 new Client("Gisele");
+			// Cria novos clientes
+			new Client();
 			System.out.println("Criando os cliente");
 						
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-
-
 	}
 }

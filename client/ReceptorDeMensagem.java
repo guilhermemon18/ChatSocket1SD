@@ -14,11 +14,11 @@ public class ReceptorDeMensagem implements Runnable {
 	private  ObjectInputStream entrada;
 	private Chat telaChat;
 
+	//Construtor
 	public ReceptorDeMensagem(ObjectInputStream entrada, Chat telaChat) {
 		this.entrada = entrada;
 		this.telaChat = telaChat;
 	}
-
 
 	public void run() {
 		while (true ){//this.entrada.hasNextLine()) {//enquanto a entrada tiver mensagem ele obtem a msg e coloca na tela do chat, funciona bem para o chat global.
@@ -34,8 +34,6 @@ public class ReceptorDeMensagem implements Runnable {
 			//System.out.println("Recebencdo MSG " + mensagem);
 			if(mensagem != null) {
 
-
-
 				if(mensagem.getTipo().equals(MessageType.GETUSERS)) {
 					System.out.println("Recebendo lista de usuuários conectados no receptor de msgs!");
 					List<User> l = (List<User>) mensagem.getMessage();
@@ -46,7 +44,6 @@ public class ReceptorDeMensagem implements Runnable {
 						}
 					telaChat.setUsers(l);
 				}else {
-
 
 					//tratamentos por meio de ifs para entregar a msg corretamente.
 					if(mensagem.getTipo().equals(MessageType.ALLUSERS)) {
@@ -73,6 +70,7 @@ public class ReceptorDeMensagem implements Runnable {
 						System.out.println("Merda do Id: " + mensagem.getMessage().toString());
 						telaChat.setId((Integer) mensagem.getMessage());
 					}
+					
 					//conversa privada entre uma pessoa e outra.
 					if(mensagem.getTipo().equals(MessageType.PRIVATE) && mensagem.getIdDestino().equals(this.telaChat.getId())) {
 
