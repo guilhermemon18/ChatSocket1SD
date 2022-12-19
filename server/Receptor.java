@@ -5,17 +5,17 @@ import java.util.List;
 
 import server.Pacote.MessageType;
 
-/*Para cada usuário cadastrado no chat da K19 deve ser criado um objeto da classe RECEPTOR.
+/*
+Obs: Para cada usuário cadastrado no chat da K19 deve ser criado um objeto da classe RECEPTOR.
 A tarefa de um objeto da classe RECEPTOR é aguardar as mensagens enviadas pelo
-usuário correspondente.*/
+usuário correspondente.
+*/
 public class Receptor implements Runnable {
 
-	/**
-	 * 
-	 */
 	private ObjectInputStream entrada;
 	private Distribuidor distribuidor;
 
+	// Construtor
 	public Receptor(ObjectInputStream entrada, Distribuidor distribuidor) {
 		this.entrada = entrada;
 		this.distribuidor = distribuidor;

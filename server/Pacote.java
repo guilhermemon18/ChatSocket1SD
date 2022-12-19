@@ -5,20 +5,15 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class Pacote implements Serializable {
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 	public enum MessageType{PRIVATE,GETUSERS,ALLUSERS,ID,DISCONNET,NAME}
 	//características básicas para a comunicação entre dois clientes;
 	private Integer idOrigem;
-	private Integer idDestino;//null indica solicitação ao servidor
+	private Integer idDestino;	//null indica solicitação ao servidor
 	private String nomeOrigem;
 	private String nomeDestino;
-	private Object mensagem;//msg em si, pode ser qualquer coisa, String, Lista de usuários etc...
-	private LocalTime hora;//hora da msg
+	private Object mensagem;	//msg em si, pode ser qualquer coisa, String, Lista de usuários etc...
+	private LocalTime hora;		//hora da msg
 	private MessageType tipo;
 	
 	//Para construir uma msg de um usuário para o outro.
@@ -29,17 +24,12 @@ public class Pacote implements Serializable {
 		this.idDestino = idDestino;
 		this.nomeOrigem = nomeOrigem;
 		this.nomeDestino = nomeDestino;
-		
-		/** Decripitar texto da mensagem aqui **/
-		AES aes = new AES();
-		mensagem = aes.Decriptar(mensagem, nomeOrigem);
-		
-		
 		this.mensagem = mensagem;
 		this.hora = hora;
 		this.tipo = MessageType.PRIVATE;
 	}
 
+	// Construtor
 	public Pacote(String nomeOrigem) {
 		super();
 		this.idOrigem = null;
@@ -52,7 +42,7 @@ public class Pacote implements Serializable {
 	}
 
 	
-	//construtor para solicitar apenas os usuários conectados, uma msg que solitica os usuários a partir de um id;
+	//Construtor para solicitar apenas os usuários conectados, uma msg que solitica os usuários a partir de um id;
 	public Pacote(Integer idOrigem) {
 		super();
 		this.idOrigem = idOrigem;
@@ -64,7 +54,7 @@ public class Pacote implements Serializable {
 		mensagem = null;//msg em si		
 	}
 	
-	//pacote para desconectar um cliente.
+	//Construtor pacote para desconectar um cliente.
 	public Pacote(Integer idOrigem,String nomeOrigem, LocalTime horaDesconectado) {
 		super();
 		this.idOrigem = idOrigem;
@@ -76,7 +66,7 @@ public class Pacote implements Serializable {
 		mensagem = "Desconectado";//msg em si		
 	}
 	
-	
+	// Construtor
 	public Pacote(Integer idOrigem, MessageType t) {
 		super();
 		this.idOrigem = idOrigem;
@@ -88,6 +78,7 @@ public class Pacote implements Serializable {
 		mensagem = null;//msg em si		
 	}
 	
+	// Construtor
 	public Pacote(Integer idDestino, Object message,MessageType t) {
 		super();
 		this.idOrigem = null;
@@ -100,27 +91,28 @@ public class Pacote implements Serializable {
 	}
 	
 
-	//enviar uma mensagem para todos.
+	//Construtor para enviar uma mensagem para todos.
 	public Pacote(Integer idOrigem, String nomeOrigem, String mensagem, LocalTime hora) {
 		super();
 		this.idOrigem = idOrigem;
 		this.nomeOrigem = nomeOrigem;
-		
-		/** Decripitar texto da mensagem aqui **/
-		AES aes = new AES();
-		mensagem = aes.Decriptar(mensagem, nomeOrigem);
-		
 		this.mensagem = mensagem;
 		this.hora = hora;
 		this.tipo = MessageType.ALLUSERS;
 		this.idDestino = null;
 		this.nomeDestino = null;
+	
+//		System.out.println("Construtor para todos os usuários recebdndo a msg criptografada!");
+//		System.out.println("Mensagem criptografada: " + this.mensagem);
+//		AES aes = new AES();
+//		this.mensagem = aes.Decriptar(this.mensagem.toString(), nomeOrigem);
+//		System.out.println("Mensagem decriptografada: " + this.mensagem);		
 	}
 	
-	//enviar a lista de usuários para todo mundo.
+	//Construtor que enviar a lista de usuários para todo mundo.
 	public Pacote(List<User> users) {
 		super();
-		this.idOrigem = null;//indica que o servidor quem mandou!
+		this.idOrigem = null;	//indica que o servidor quem mandou!
 		this.idDestino = null;
 		this.nomeOrigem = null; //servidor quem mandou
 		this.mensagem = users;
@@ -130,7 +122,7 @@ public class Pacote implements Serializable {
 	}
 	
 
-	//getters para obter as informações.
+	//getters para obter as informações
 	public Integer getIdOrigem() {
 		return idOrigem;
 	}
@@ -159,22 +151,38 @@ public class Pacote implements Serializable {
 		return tipo;
 	}
 	
-	//obtem a msg: faz a lógica e dependendo do pacote dá uma msg diferente para cada situação requisitada.
+	// Pega as mensagens e retorna para o chat de destino. Antes decripta a mensagem. 
+	//Obtem a msg: faz a lógica e dependendo do pacote dá uma msg diferente para cada situação requisitada.
+	//getMessage é chamado sempre q se quer obter a msg, ele pode ser chamado várias vezes, por isso não é bom alterar
+	//as variáveis da classe, pois prejudicaria a próxima execução, uma msg decriptografada e armazenada na variável this.mensagem
+	//seria chamadada novamente para ser decriptografada já estando assim.
 	public Object getMessage() {
 		if(this.tipo.equals(MessageType.GETUSERS) || this.tipo.equals(MessageType.ID)  || 
 				this.tipo.equals(MessageType.NAME)) {
 			return this.mensagem;
 		}else if(this.tipo.equals(MessageType.ALLUSERS) || this.tipo.equals(MessageType.DISCONNET)){
 			
-			/**
-			 * decriptografar o texto da mensagem de acordo com o nome do cliente
-			 */
+			/** Decripitar texto da mensagem aqui **/			
+			System.out.println("\nChat publico\nGetMessage decriptografando:");
+			System.out.println("Mensagem a ser decriptografada: " + this.mensagem);
+			/** Decripitar texto da mensagem aqui **/
+			AES aes = new AES();
+			String aux  = aes.Decriptar(this.mensagem.toString(), nomeOrigem);
+			System.out.println("Mensagem decriptografada: " + aux);
 			
-			
-			return this.nomeOrigem + " " + this.hora.toString().substring(0,8) + ": " + this.mensagem;
+			return this.nomeOrigem + " " + this.hora.toString().substring(0,8) + ": " + aux;
 		}//else {
 //			return this.hora.toString().substring(0, 8) + ": " + this.mensagem;
-		return this.nomeOrigem + " " + this.hora.toString().substring(0,8) + ": " + this.mensagem;
+		
+		/** Decripitar texto da mensagem aqui para chat privado **/			
+		System.out.println("\nChat privado\nGetMessage decriptografando:");
+		System.out.println("Mensagem a ser decriptografada: " + this.mensagem);
+		/** Decripitar texto da mensagem aqui **/
+		AES aes = new AES();
+		String aux  = aes.Decriptar(this.mensagem.toString(), nomeOrigem);
+		System.out.println("Mensagem decriptografada: " + aux);
+		
+		return this.nomeOrigem + " " + this.hora.toString().substring(0,8) + ": " + aux;
 //		}
 	}
 

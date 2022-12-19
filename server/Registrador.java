@@ -11,8 +11,10 @@ import java.util.List;
 
 import server.Pacote.MessageType;
 
-/*Na aplicação servidora, um objeto registrador deve esperar novos usuários do chat 
-e realizar todo processo de registro de novos usuários quando alguém chegar.*/
+/*
+Obs: Na aplicação servidora, um objeto registrador deve esperar novos usuários do chat 
+e realizar todo processo de registro de novos usuários quando alguém chegar.
+*/
 public class Registrador implements Runnable{
 
 	private Distribuidor distribuidor;
@@ -20,6 +22,7 @@ public class Registrador implements Runnable{
 	private List<User> clients;
 	private Integer nextId;
 
+	// Construtor
 	public Registrador(Distribuidor distribuidor, ServerSocket serverSocket) {
 		this.distribuidor = distribuidor;
 		this.serverSocket = serverSocket;
@@ -27,8 +30,6 @@ public class Registrador implements Runnable{
 		this.distribuidor = new Distribuidor(clients);
 		this.nextId = 1;
 	}
-
-
 
 	//vai precisar alocar um ID inteiro para cada cliente no servidor, para poder diferenciar eles de cada um, na apresentação na tela será mostrado o 
 	//nome do cliente seguido do ID dele, com isso será possível dizer para quem vai ser mandada a msg privada.
@@ -81,20 +82,15 @@ public class Registrador implements Runnable{
 					
 					this.distribuidor.adicionaEmissor(emissor);
 					
-					
 					for (User user : clients) {
 						System.out.println(user);
 					}
-					//porcaria de java, não está entendendo que é para mandar a lista atualizada, tá com problemas na lista que ele manda.
+					
 					List<User> teste = new LinkedList<User>(clients);
 					//teste.add(new User(1,"Guilherme"));
 					//teste.add(new User(2,"Camila"));
 					
-					this.distribuidor.distribuiMensagem(new Pacote(teste));
-					
-					
-					
-					
+					this.distribuidor.distribuiMensagem(new Pacote(teste));					
 			} catch (IOException | ClassNotFoundException e) {
 				System.out.println("ERRO");
 			}

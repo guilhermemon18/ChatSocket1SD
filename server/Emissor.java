@@ -4,14 +4,16 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 /*
-Para cada usuário cadastrado no chat da K19 deve ser criado um objeto da classe EMISSOR.
+Obs: Para cada usuário cadastrado no chat deve ser criado um objeto da classe EMISSOR.
 A tarefa de um objeto da classe EMISSOR é enviar as mensagens do chat para o usuário
-correspondente.*/
+correspondente.
+*/
 public class Emissor{
 
 	private ObjectOutputStream saida;
 	private Integer id;
 
+	//Construtor
 	public Emissor(ObjectOutputStream saida,Integer id) {
 		this.saida = saida;
 		this.id = id;
@@ -21,9 +23,8 @@ public class Emissor{
 		return id;
 	}
 
-	public void envia(Object mensagem) throws IOException {
 
-		
+	public void envia(Object mensagem) throws IOException {
 		this.saida.writeObject(mensagem);
 		this.saida.flush();
 		//System.out.println("Imprimindo mensagem no emissor: " + mensagem);

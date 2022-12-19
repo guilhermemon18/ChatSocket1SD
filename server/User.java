@@ -3,14 +3,12 @@ package server;
 import java.io.Serializable;
 
 public class User implements Serializable {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String nome;
 	
+	// Construtor
 	public User(Integer id, String nome) {
 		super();
 		this.id = id;
