@@ -67,7 +67,7 @@ public class ReceptorDeMensagem implements Runnable {
 
 					if(mensagem.getTipo().equals(MessageType.ID)) {
 						System.out.println("Setando o ID do cliente: "+ mensagem.getMessage());
-						System.out.println("Merda do Id: " + mensagem.getMessage().toString());
+						System.out.println("Id: " + mensagem.getMessage().toString());
 						telaChat.setId((Integer) mensagem.getMessage());
 					}
 					

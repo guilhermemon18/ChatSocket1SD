@@ -44,8 +44,18 @@ public class AES {
 			 * Se chave passar de 32 bits ele capitura somente x bits (indicado).	
 			 * */
 			chave = Arrays.copyOf(chave, 32); 
-			SecretKeySpec secretKeySpec = new SecretKeySpec(chave, "AES");
+			SecretKeySpec secretKeySpec = new SecretKeySpec(chave, "AES");	
+			// Constrói uma chave secreta a partir da matriz de bytes fornecida e o algoritimo.
+			
+			
 			return secretKeySpec;
+			
+			
+			
+			
+			
+			
+			
 			
 			/*System.out.println(new String(chave));
 			for (int i = 0;i< new String(chave).length(); i++) {

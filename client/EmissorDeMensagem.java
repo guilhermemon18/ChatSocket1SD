@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 /*
- *Obs: Na aplicação cliente, deve existir um objeto da classe EMISSORDEMENSAGEM que envia
+Obs: Na aplicação cliente, deve existir um objeto da classe EMISSORDEMENSAGEM que envia
 as mensagens digitadas pelo usuário para a aplicação servidora.
 */
 public class EmissorDeMensagem {
